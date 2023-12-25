@@ -79,34 +79,20 @@ class MergeSort{
         
 };
 
-
-
-class Solution {
-
-public:
-    vector<NumberWithIndex> arrayWithIndex(vector<int>& nums)
-    {
-        int length= nums.size();
-        std::vector<NumberWithIndex> result;
-
-        for (int i = 0; i < length; ++i)
-        {
-            result.push_back(NumberWithIndex(nums[i],i));
-        }
-        return result;
-
-    }
-};
     
 class Bisection{
     
     public:
-        NumberWithIndex FindNumber(vector<NumberWithIndex> nums, int target, int start, int end)
+        vector<int> FindNumber(vector<NumberWithIndex> nums, int target, int start, int end)
         {
             int half=static_cast<int> (start+end)/2;
-            if(nums[half].value==target)
-            {
-                return nums[half];
+            if((end-start)==0)
+            {   
+                if(nums[half].value==target)
+                {
+                    return vector<int>({1, nums[half].index});
+                }
+                return vector<int>({0,half});
             }
             
             else if(nums[half].value<target)
@@ -121,42 +107,87 @@ class Bisection{
         }
 };
 
-int main() {
-    
-    std::vector<int> myVector;
-    
-    myVector={4,2,6,7,4,1,9,8,14,3,56,12};
+
+class Solution {
+
+
+public:
+    vector<NumberWithIndex> arrayWithIndex(vector<int>& nums)
+    {
+        int length= nums.size();
+        std::vector<NumberWithIndex> result;
+
+        for (int i = 0; i < length; ++i)
+        {
+            result.push_back(NumberWithIndex(nums[i],i));
+        }
+        return result;
+
+    }
+
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
     
     Solution newObject;
-    vector<NumberWithIndex> newArray= newObject.arrayWithIndex(myVector);
+    vector<NumberWithIndex> newArray= newObject.arrayWithIndex(nums);
     
      
     MergeSort SortObject;
     
-    for(int i=0; i<newArray.size(); ++i)
+    /*for(int i=0; i<newArray.size(); ++i)
         {
             int number=newArray[i].index;
             std::cout <<number << std::endl;
         }
     
     std::cout <<"xxxxxxxxxxxx" << std::endl;
-    
+    */
     newArray=SortObject.Sort(newArray);
     
-    for(int i=0; i<newArray.size(); ++i)
+    /*for(int i=0; i<newArray.size(); ++i)
         {
             int number=newArray[i].value;
             std::cout <<number << std::endl;
         }
+    */
         
     Bisection BisectionObject;
+
+    int foundSolution=0;
+    int ind1=0;
+    int ind2=newArray.size()-1;
+    vector<int>result;
+    while(foundSolution==0)
+    {   
+        
+        int newTarget=target-newArray[ind1].value;
+        vector<int> solution=BisectionObject.FindNumber(newArray, newTarget,ind1, ind2);
+
+        if(solution[0]==1)
+        {
+            result={newArray[ind1].index,solution[1]};
+            foundSolution=1;
+        }
+        else
+        {
+            ind1++;
+            ind2=solution[1];
+        }
+
+    }
+    return result;
+    }   
+};
+
+int main() {
     
-    NumberWithIndex value=BisectionObject.FindNumber(newArray, 3,0, newArray.size()-1);
-    std::cout <<value.value << std::endl;
+    vector<int> nums ={2,7,2,6,4,12,76,34,23,3,5,8};
+    int target= 99;
     
+    Solution SolutionObject;
+    vector<int> result=SolutionObject.twoSum(nums, target);
     
+    std::cout<<result[0]<<"x"<<result[1];
     
-    
-    
-    
+    return 0;
 }

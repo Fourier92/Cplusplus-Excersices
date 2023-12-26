@@ -102,7 +102,7 @@ class Bisection{
             
             else
             {
-                return FindNumber(nums, target, start,half-1);
+                return FindNumber(nums, target, start,half);
             }
         }
 };
@@ -161,7 +161,7 @@ public:
     {   
         
         int newTarget=target-newArray[ind1].value;
-        vector<int> solution=BisectionObject.FindNumber(newArray, newTarget,ind1, ind2);
+        vector<int> solution=BisectionObject.FindNumber(newArray, newTarget,ind1+1, ind2);
 
         if(solution[0]==1)
         {
@@ -182,7 +182,7 @@ public:
 int main() {
     
     vector<int> nums ={2,7,2,6,4,12,76,34,23,3,5,8};
-    int target= 99;
+    int target= 8;
     
     Solution SolutionObject;
     vector<int> result=SolutionObject.twoSum(nums, target);
